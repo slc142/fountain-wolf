@@ -36,10 +36,10 @@ func remove_piece(coord: Vector3i) -> void:
 		grid[coord]["node"].queue_free()
 		grid.erase(coord)
 
-func get_piece_data(coord: Vector3i) -> PieceData:
+func get_piece_data(coord: Vector3i) -> Dictionary:
 	if grid.has(coord):
-		return grid[coord]["data"]
-	return null
+		return grid[coord]
+	return {}
 
 func is_occupied(coord: Vector3i) -> bool:
 	return grid.has(coord)

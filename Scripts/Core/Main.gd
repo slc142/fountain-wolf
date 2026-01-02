@@ -16,6 +16,8 @@ func _ready():
 	# 2. Place Pieces
 	# (0,0,0) Start Point (Left to Right)
 	grid_manager.place_piece(Vector3i(0,0,0), pipe_x)
+	#grid_manager.place_piece(Vector3i(0,0,-1), pipe_z)
+	#grid_manager.place_piece(Vector3i(0,0,1), pipe_z)
 	
 	# (1,0,0) Another Straight
 	grid_manager.place_piece(Vector3i(1,0,0), pipe_x)

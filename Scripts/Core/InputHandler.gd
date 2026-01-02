@@ -46,7 +46,8 @@ func attempt_drop():
 	selected_coord = null
 	
 	# Recalculate flow whenever a piece is moved
-	flow_controller.calculate_flow(Vector3i(0,0,0), Vector3i.RIGHT)
+	# TODO: add a way to change the flow source
+	flow_controller.calculate_flow(Vector3i(0,1,0), Vector3i.DOWN)
 
 func handle_drag():
 	var ray_result = shoot_ray()
