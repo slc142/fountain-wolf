@@ -4,7 +4,8 @@ extends Node3D
 # We store the water meshes here. Key = Direction (Vector3i), Value = MeshInstance3D
 var water_legs: Dictionary = {}
 @export var water_color: Color = Color(0.0, 0.6, 1.0) # Nice distinct blue
-@export var pipe_radius: float = 0.3
+@export var pipe_radius: float = 0.5
+@export var pipe_length: float = 1
 
 func _ready():
 	# We wait for the GridManager to inject the PieceData so we know what shape we are
@@ -30,8 +31,7 @@ func create_leg_mesh(direction: Vector3i):
 	var box = BoxMesh.new()
 	
 	# Setup the visual shape of the water
-	# Length is 0.5 (Half a grid unit), Width/Height is slightly smaller than pipe
-	box.size = Vector3(pipe_radius * 2, pipe_radius * 2, 0.5) 
+	box.size = Vector3(pipe_length, pipe_radius, pipe_radius) 
 	
 	# Create a simple blue material
 	var mat = StandardMaterial3D.new()
@@ -62,20 +62,20 @@ func create_leg_mesh(direction: Vector3i):
 	water_legs[direction] = mesh_inst
 
 # The Main Animation Function
-func animate_fill(entry_dir: Vector3i, exit_dirs: Array, duration: float = 0.3):
+func animate_fill(entry_dir: Vector3i, exit_dirs: Array, duration: float = 1.5):
 	var tween = create_tween()
 	
 	# 1. ANIMATE INFLOW (Edge -> Center)
 	# If we didn't fall from above, we must flow in from the side
 	if entry_dir != Vector3i.UP:
-		var in_leg = water_legs.get(-entry_dir) # The leg facing the entry
+		var in_leg = water_legs.get(entry_dir) # The leg facing the entry
 		if in_leg:
 			# Logic: Grow from Edge (-0.5) to Center (0)
 			# We set pivot behavior by manipulating position and scale together
 			
 			# Start at edge
 			in_leg.scale.z = 0
-			in_leg.position = (Vector3(entry_dir) * 0.5) # Start at edge
+			in_leg.position = (Vector3(entry_dir) * 0.5)
 			
 			# Tween to center
 			tween.tween_property(in_leg, "scale:z", 1.0, duration / 2)
@@ -100,3 +100,8 @@ func animate_fill(entry_dir: Vector3i, exit_dirs: Array, duration: float = 0.3):
 	
 	# Return the tween so the controller knows when to start the next piece
 	return tween
+
+func reset_water():
+	for dir in water_legs:
+		var leg = water_legs[dir]
+		leg.scale = Vector3(1, 1, 0) # Reset scale to 0 (hidden)

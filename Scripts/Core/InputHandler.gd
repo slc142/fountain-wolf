@@ -27,7 +27,7 @@ func attempt_pick_up():
 			selected_coord = coord
 			is_dragging = true
 			# Visual feedback: Lift the piece slightly
-			grid_manager.grid[selected_coord]["node"].position.y += 0.2
+			grid_manager.grid[selected_coord]["node"].position.y += 0.5
 
 func attempt_drop():
 	if not is_dragging: return
@@ -54,7 +54,7 @@ func handle_drag():
 		# Hover effect: move the visual node to follow mouse (snapped to grid)
 		var hover_coord = grid_manager.world_to_grid(ray_result.position)
 		var target_pos = grid_manager.grid_to_world(hover_coord)
-		target_pos.y += 0.2 # Keep it "floating" while dragging
+		target_pos.y += 0.5 # Keep it "floating" while dragging
 		grid_manager.grid[selected_coord]["node"].position = target_pos
 
 func shoot_ray():
