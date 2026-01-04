@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode cull_disabled;
 
-uniform vec3 water_color : source_color = vec3(0.0, 0.5, 1.0);
+uniform vec3 water_color : source_color = vec3(0.0, 0.5, 0.8);
 uniform float fill_amount = 0.0;
 uniform float flow_speed = 2.0;
 
@@ -13,9 +13,10 @@ void fragment() {
     }
     
     // Simple flowing texture effect using sine waves
-    float flow = sin(UV.x * 20.0 - TIME * flow_speed) * 0.1;
-    ALBEDO = water_color + flow;
-    ALPHA = 0.9;
+    //float flow = sin(UV.x * 20.0 - TIME * flow_speed) * 0.05;
+    //ALBEDO = water_color + flow;
+	ALBEDO = water_color;
+    ALPHA = 0.8;
     METALLIC = 0.5;
     ROUGHNESS = 0.2;
 }

@@ -1,4 +1,4 @@
-# (instert title here once I think of a good name)
+# FountainWolf
 
 This is a game and level editor inspired by the game *Flow Water Fountain 3D Puzzle*, created in Godot 4.5.1.
 
@@ -28,6 +28,7 @@ The goal of the game is to create a path of flowing water from the start point t
     - [ ] Target grid space indicator while dragging
     - [ ] Better water
     - [ ] Non-movable pieces are dulled in color
+    - [ ] Better lighting
 - [ ] Sound
     - [ ] Water flow sound
     - [ ] Win sound

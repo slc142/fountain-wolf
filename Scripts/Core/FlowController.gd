@@ -88,9 +88,19 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 			"in": data.turn_points.get("in", Vector3.ZERO),
 			"out": data.turn_points.get("out", Vector3.ZERO)}
 		)
+		current_points.append({
+			"pos": center_pos,
+			"in": data.turn_points.get("in", Vector3.ZERO),
+			"out": data.turn_points.get("out", Vector3.ZERO)}
+		)
+		#current_points.append({
+			#"pos": center_pos + entry_dir * 0.5,
+			#"in": data.turn_points.get("in", Vector3.ZERO),
+			#"out": data.turn_points.get("out", Vector3.ZERO)}
+		#)
 		_trace_branch(current_coord + exit, exit, current_points, accumulated_delay)
 		
 	# If we are at the very end of a branch (no splits, but loop finished), save it
 	else:
-		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
+		current_points.append({"pos": center_pos + entry_dir * 0.5, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		branches.append({ "points": current_points.duplicate(), "delay": accumulated_delay })

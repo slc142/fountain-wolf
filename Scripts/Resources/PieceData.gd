@@ -32,7 +32,7 @@ static func create_turn_pipe(scene: PackedScene, rot: float, in_dir: Vector3i, o
 	p.rotation_degrees = rot
 	p.flow_map[in_dir] = [out_dir]
 	p.flow_map[out_dir] = [in_dir]
-	p.turn_points = {"in": Vector3(in_dir) * 0.8, "out": Vector3(out_dir) * -0.3}
-	#p.turn_points = {"in": Vector3.ZERO, "out": Vector3.ZERO}
+	#p.turn_points = {"in": Vector3(in_dir) * 0.8, "out": Vector3(out_dir) * -0.3}
+	p.turn_points = {"in": Vector3.ZERO, "out": Vector3.ZERO}
 	return p
 	
