@@ -35,8 +35,8 @@ func create_flow_branch(points: Array, start_delay: float):
 	
 	# Create the cross-section
 	mesh.polygon = PackedVector2Array([
-		Vector2(-0.3, -0.2), Vector2(0.3, -0.2), 
-		Vector2(0.3, 0.2), Vector2(-0.3, 0.2)
+		Vector2(-0.2, -0.2), Vector2(0.2, -0.2), 
+		Vector2(0.2, 0.2), Vector2(-0.2, 0.2)
 	])
 	
 	# Assign Shader

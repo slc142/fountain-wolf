@@ -1,12 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://cpoy3k62s2fm5"]
+[gd_scene load_steps=20 format=3 uid="uid://cpoy3k62s2fm5"]
 
 [ext_resource type="Script" uid="uid://bvevhh0kxgxhb" path="res://Scripts/Core/Main.gd" id="1_kln2b"]
 [ext_resource type="Script" uid="uid://bdewe0hm8vd3p" path="res://Scripts/Core/GridManager.gd" id="2_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://caroln0i1kwx" path="res://Prefabs/StraightPiece.tscn" id="2_vy5pj"]
 [ext_resource type="PackedScene" uid="uid://c53p3biqv6rr4" path="res://Prefabs/TurnPiece.tscn" id="3_bmxlf"]
 [ext_resource type="Script" uid="uid://b8jwjd3gecqhj" path="res://Scripts/Core/FlowController.gd" id="3_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://c62ojvie2ym2t" path="res://Prefabs/TPiece.tscn" id="4_frkhe"]
+[ext_resource type="PackedScene" uid="uid://cq5kc6q61mvne" path="res://Prefabs/CrossPiece.tscn" id="5_1p5hy"]
 [ext_resource type="Script" uid="uid://4c8ebcn6xeg3" path="res://Scripts/Core/InputHandler.gd" id="5_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://dr8pvm6bglw8y" path="res://Prefabs/BlockPiece.tscn" id="6_h1m7h"]
 [ext_resource type="Script" uid="uid://1j6q8d1ycgrb" path="res://Scripts/Core/Camera.gd" id="6_v1gob"]
+[ext_resource type="PackedScene" uid="uid://ba13ovap1bwiw" path="res://Prefabs/OneExitPiece.tscn" id="7_erwvk"]
 [ext_resource type="Script" uid="uid://bqcpie86t1m8g" path="res://Scripts/Core/WaterPathManager.gd" id="8_50glp"]
 [ext_resource type="Shader" uid="uid://ckgf7o51iarw7" path="res://Shaders/water_flow.gdshader" id="9_vy5pj"]
 
@@ -37,6 +41,10 @@ size = Vector3(5, 0.2, 5)
 script = ExtResource("1_kln2b")
 straight_scene = ExtResource("2_vy5pj")
 turn_scene = ExtResource("3_bmxlf")
+t_scene = ExtResource("4_frkhe")
+cross_scene = ExtResource("5_1p5hy")
+block_scene = ExtResource("6_h1m7h")
+one_exit_scene = ExtResource("7_erwvk")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_v1gob")
