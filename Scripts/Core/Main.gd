@@ -25,6 +25,8 @@ func _ready():
 	# (2,0,0) Turn (Enters Left, Exits Forward - which is Z-)
 	grid_manager.place_piece(Vector3i(2,0,0), turn)
 	
+	grid_manager.place_piece(Vector3i(0,0,2), pipe_x)
+	
 	# (2,0,-1) Catch the flow? Let's put a straight pipe aligned with Z
 	var z_pipe = PieceData.new()
 	z_pipe.flow_map[Vector3i.BACK] = [Vector3i.FORWARD] # Enters from BACK (Z-), Exits FORWARD (Z-)

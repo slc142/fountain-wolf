@@ -21,7 +21,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 	# 1. Safety Check (Bounds & Loops)
 	if current_coord.y < MAX_DEPTH: 
 		print("Fell into the abyss at ", current_coord)
-		current_points.append(center_pos)
+		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		branches.append({ "points": current_points.duplicate(), "delay": accumulated_delay })
 		return
 
@@ -30,14 +30,15 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 	
 	# --- CASE A: FALLING (No Piece) ---
 	if piece_info == {}:
-		# Falling is a straight line downwards		
+		# Falling is a straight line downwards
 		# Add to current branch
-		current_points.append(center_pos)
+		# TODO: add control points for falling water
+		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		
 		print("Flow falling at ", current_coord)
 		
 		# Continue falling
-		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, current_points, accumulated_delay)
+		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, current_points, accumulated_delay + (current_points.size() * 0.05))
 		return
 	
 	var data = piece_info["data"]
@@ -59,14 +60,14 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 		exits = data.flow_map[side_entered]
 	else:
 		print("Flow blocked at ", current_coord)
-		current_points.append(center_pos - entry_dir * 0.5)
+		current_points.append({"pos": center_pos - entry_dir * 0.5, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		branches.append({ "points": current_points.duplicate(), "delay": accumulated_delay })
 		return # Blocked
 	
 	# If Split (size > 1), we finalize the current branch here
 	if exits.size() > 1:
 		# Important: Add the CENTER point to connect the fall to the split
-		current_points.append(center_pos)
+		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		branches.append({ "points": current_points.duplicate(), "delay": accumulated_delay })
 		
 		# Start new branches from the center
@@ -82,10 +83,14 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 	# If Single Path (Extension)
 	elif exits.size() == 1:
 		var exit = exits[0]
-		current_points.append(center_pos)
+		current_points.append({
+			"pos": center_pos - entry_dir * 0.5,
+			"in": data.turn_points.get("in", Vector3.ZERO),
+			"out": data.turn_points.get("out", Vector3.ZERO)}
+		)
 		_trace_branch(current_coord + exit, exit, current_points, accumulated_delay)
 		
 	# If we are at the very end of a branch (no splits, but loop finished), save it
 	else:
-		current_points.append(center_pos)
+		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		branches.append({ "points": current_points.duplicate(), "delay": accumulated_delay })
