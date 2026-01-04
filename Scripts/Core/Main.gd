@@ -45,4 +45,4 @@ func _ready():
 	# 3. Start Simulation
 	print("--- TEST START ---")
 	
-	flow_controller.calculate_flow(Vector3i(0,1,0), Vector3i.DOWN)
+	flow_controller.calculate_flow(Vector3i(0,2,0), Vector3i.DOWN)

@@ -11,16 +11,16 @@ The goal of the game is to create a path of flowing water from the start point t
     - [ ] Flow logic with covered pieces
     - [ ] Level win condition
     - [ ] Non-movable pieces
-    - [ ] Piece stacking
+    - [x] Piece stacking
     - [ ] Multiple color flows
     - [ ] Partial flow recalculation (immediately after pick up piece and after placement)
 - [ ] Piece types:
     - [ ] Water source
     - [ ] Goal
-    - [ ] Block
-    - [ ] One-exit piece
-    - [ ] T-piece
-    - [ ] Cross-piece
+    - [x] Block
+    - [x] One-exit piece
+    - [x] T-piece
+    - [x] Cross-piece
     - [ ] Covered pieces
 - [ ] Graphics
     - [ ] Camera rotation
@@ -36,6 +36,7 @@ The goal of the game is to create a path of flowing water from the start point t
 - [ ] Game UI
     - [ ] Level selection
     - [ ] Win screen
+    - [ ] Main menu
 - [ ] Level editor
     - [ ] Piece type selector
     - [ ] Add piece

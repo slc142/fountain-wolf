@@ -42,6 +42,7 @@ mesh = SubResource("ArrayMesh_gm642")
 skeleton = NodePath("")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="One_Exit_Piece"]
+collision_layer = 5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="One_Exit_Piece/StaticBody3D"]
 shape = SubResource("BoxShape3D_f26bs")

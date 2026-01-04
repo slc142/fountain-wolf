@@ -44,9 +44,8 @@ func get_piece_data(coord: Vector3i) -> Dictionary:
 func is_occupied(coord: Vector3i) -> bool:
 	return grid.has(coord)
 
-# Convert Grid Coordinate (1, 2, 0) -> World Position (1.0, 2.0, 0.0)
 func grid_to_world(coord: Vector3i) -> Vector3:
-	return Vector3(coord.x, coord.y, coord.z) * cell_size
+	return Vector3(coord.x, coord.y * 0.5, coord.z) * cell_size
 
 # Convert World Position -> Grid Coordinate
 func world_to_grid(pos: Vector3) -> Vector3i:
