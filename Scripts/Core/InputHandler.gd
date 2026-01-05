@@ -103,9 +103,14 @@ func attempt_drop():
 	if ray_result:
 		var target_coord = grid_manager.world_to_grid(ray_result.position)
 		
-		# If target is empty, move it. If occupied, return to original.
+		# If target is empty, place. If occupied, attempt to place on top.
 		if not grid_manager.is_occupied(target_coord):
 			# Place piece at new location
+			dragged_piece_data["node"].position = grid_manager.grid_to_world(target_coord)
+			grid_manager.grid[target_coord] = dragged_piece_data
+		elif not grid_manager.is_occupied(target_coord + Vector3i(0, 1, 0)):
+			# Place piece on top of occupied position
+			target_coord.y += 1
 			dragged_piece_data["node"].position = grid_manager.grid_to_world(target_coord)
 			grid_manager.grid[target_coord] = dragged_piece_data
 		else:
@@ -176,9 +181,7 @@ func shoot_ray():
 		# Check if this position is occupied
 		if grid_manager.is_occupied(grid_coord):
 			# If occupied, try to place on top
-			grid_coord.y += 1
+			result.position.y += 0.5
 		
-		# Convert back to world position for proper alignment
-		result.position = grid_manager.grid_to_world(grid_coord)
 	
 	return result

@@ -24,7 +24,7 @@ The goal of the game is to create a path of flowing water from the start point t
     - [ ] Covered pieces
 - [ ] Graphics
     - [ ] Camera rotation
-    - [ ] Smooth piece dragging
+    - [x] Smooth piece dragging
     - [ ] Target grid space indicator while dragging
     - [ ] Better water
     - [ ] Non-movable pieces are dulled in color
