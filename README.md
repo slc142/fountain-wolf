@@ -10,7 +10,7 @@ The goal of the game is to create a path of flowing water from the start point t
     - [x] Basic flow logic
     - [ ] Flow logic with covered pieces
     - [ ] Level win condition
-    - [ ] Non-movable pieces
+    - [x] Non-movable pieces
     - [x] Piece stacking
     - [ ] Multiple color flows
     - [ ] Partial flow recalculation (immediately after pick up piece and after placement)
@@ -29,6 +29,7 @@ The goal of the game is to create a path of flowing water from the start point t
     - [ ] Better water
     - [ ] Non-movable pieces are dulled in color
     - [ ] Better lighting
+    - [ ] Piece materials
 - [ ] Sound
     - [ ] Water flow sound
     - [ ] Win sound

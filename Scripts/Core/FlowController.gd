@@ -4,6 +4,7 @@ extends Node
 @export var grid_manager: GridManager
 @export var MAX_DEPTH: int = 0
 @export var water_path_manager: WaterPathManager
+@export var delay_factor: float = 0.05
 
 var branches: Array = [] # Array of Dictionaries: { "points": [], "delay": 0.0 }
 
@@ -38,7 +39,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 		print("Flow falling at ", current_coord)
 		
 		# Continue falling
-		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, current_points, accumulated_delay + (current_points.size() * 0.05))
+		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, current_points, accumulated_delay + (current_points.size() * delay_factor))
 		return
 	
 	var data = piece_info["data"]
@@ -72,7 +73,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 		
 		# Start new branches from the center
 		for exit in exits:
-			var start_delay = accumulated_delay + (current_points.size() * 0.05)
+			var start_delay = accumulated_delay + (current_points.size() * delay_factor)
 			
 			# Start new branch list with the Center Point
 			var new_branch = [center_pos]
@@ -83,11 +84,12 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 	# If Single Path (Extension)
 	elif exits.size() == 1:
 		var exit = exits[0]
-		current_points.append({
-			"pos": center_pos - entry_dir * 0.5,
-			"in": data.turn_points.get("in", Vector3.ZERO),
-			"out": data.turn_points.get("out", Vector3.ZERO)}
-		)
+		if entry_dir != Vector3i.DOWN:
+			current_points.append({
+				"pos": center_pos - entry_dir * 0.5,
+				"in": data.turn_points.get("in", Vector3.ZERO),
+				"out": data.turn_points.get("out", Vector3.ZERO)}
+			)
 		current_points.append({
 			"pos": center_pos,
 			"in": data.turn_points.get("in", Vector3.ZERO),
@@ -98,7 +100,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, current_points:
 			#"in": data.turn_points.get("in", Vector3.ZERO),
 			#"out": data.turn_points.get("out", Vector3.ZERO)}
 		#)
-		_trace_branch(current_coord + exit, exit, current_points, accumulated_delay)
+		_trace_branch(current_coord + exit, exit, current_points, accumulated_delay ) # don't add delay here
 		
 	# If we are at the very end of a branch (no splits, but loop finished), save it
 	else:

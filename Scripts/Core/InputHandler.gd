@@ -23,6 +23,8 @@ func create_drop_indicator():
 	var border_thickness = 0.05
 	var border_height = 0.01
 	var square_size = 1.0
+
+	# TODO: make the border not cast shadows
 	
 	# Create four edges of the square border
 	var edges = [
@@ -70,6 +72,17 @@ func attempt_pick_up():
 		var world_pos = ray_result.position
 		var coord = grid_manager.world_to_grid(world_pos)
 		if grid_manager.is_occupied(coord):
+			var piece_data = grid_manager.grid[coord]["data"]
+			
+			# Only pick up movable pieces
+			if not piece_data.is_movable:
+				return
+			
+			# Don't pick up pieces that have something on top
+			var above_coord = coord + Vector3i(0, 1, 0)
+			if grid_manager.is_occupied(above_coord):
+				return
+			
 			selected_coord = coord
 			is_dragging = true
 			
@@ -115,8 +128,9 @@ func handle_drag():
 	var ray_result = shoot_ray()
 	if ray_result:
 		# Hover effect: move the visual node to follow mouse (snapped to grid)
-		var hover_coord = grid_manager.world_to_grid(ray_result.position)
-		var target_pos = grid_manager.grid_to_world(hover_coord)
+		# var hover_coord = grid_manager.world_to_grid(ray_result.position)
+		# var target_pos = grid_manager.grid_to_world(hover_coord)
+		var target_pos = ray_result.position
 		target_pos.y += 0.5 # Keep it "floating" while dragging
 		dragged_piece_data["node"].position = target_pos
 		

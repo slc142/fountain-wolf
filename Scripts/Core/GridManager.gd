@@ -15,12 +15,34 @@ func place_piece(coord: Vector3i, piece_data: PieceData) -> void:
 	new_node.position = grid_to_world(coord)
 	new_node.rotation_degrees.y = piece_data.rotation_degrees
 	
+	# Apply visual effects for non-movable pieces
+	if not piece_data.is_movable:
+		apply_dull_effect(new_node)
+	
 	# Initialize the visuals
 	# Assuming the script is on the root node of the scene
 	if new_node.has_method("initialize"):
 		new_node.initialize(piece_data)
 		
 	grid[coord] = { "data": piece_data, "node": new_node }
+
+func apply_dull_effect(node: Node3D):
+	# Apply dulling effect to make piece appear non-interactive
+	# Create unique material copies to avoid affecting shared materials
+	for child in node.get_children():
+		if child is MeshInstance3D:
+			var original_material = child.get_active_material(0)
+			if original_material != null and original_material is StandardMaterial3D:
+				# Create a unique copy of the material
+				var dull_material = original_material.duplicate()
+				
+				# Dull the color by reducing albedo and increasing roughness
+				dull_material.albedo_color = dull_material.albedo_color.darkened(0.5)
+				dull_material.roughness = min(dull_material.roughness + 0.3, 1.0)
+				dull_material.metallic = max(dull_material.metallic - 0.2, 0.0)
+				
+				# Apply the unique dull material
+				child.material_override = dull_material
 
 func move_piece(from_coord: Vector3i, to_coord: Vector3i) -> void:
 	if not grid.has(from_coord) or is_occupied(to_coord):

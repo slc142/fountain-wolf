@@ -14,9 +14,10 @@ func _ready():
 	
 	# 1. Create Data for all piece types
 	var straight_x = PieceData.create_straight_piece(straight_scene, "X")
+	var straight_x_fixed = PieceData.create_straight_piece(straight_scene, "X", false)
 	var straight_z = PieceData.create_straight_piece(straight_scene, "Z")
 	var turn = PieceData.create_turn_piece(turn_scene, Vector3i.LEFT)
-	var t_piece = PieceData.create_t_piece(t_scene, Vector3i.BACK)  # T-piece with back blocked
+	var t_piece = PieceData.create_t_piece(t_scene, Vector3i.BACK)
 	var cross_piece = PieceData.create_cross_piece(cross_scene)
 	var block_piece = PieceData.create_block(block_scene)
 	var one_exit_piece = PieceData.create_one_exit_piece(one_exit_scene, Vector3i.FORWARD)
@@ -24,7 +25,7 @@ func _ready():
 	# 2. Place Pieces in a test pattern
 	# Row 0: Basic straight pieces
 	grid_manager.place_piece(Vector3i(0,0,0), straight_x)  # Straight X
-	grid_manager.place_piece(Vector3i(1,0,0), straight_x)  # Another straight X
+	grid_manager.place_piece(Vector3i(1,0,0), straight_x_fixed)  # Another straight X
 	
 	# Row 1: Turn piece
 	grid_manager.place_piece(Vector3i(2,0,0), turn)  # Turn piece
@@ -45,4 +46,4 @@ func _ready():
 	# 3. Start Simulation
 	print("--- TEST START ---")
 	
-	flow_controller.calculate_flow(Vector3i(0,2,0), Vector3i.DOWN)
+	flow_controller.calculate_flow(Vector3i(0,1,0), Vector3i.DOWN)

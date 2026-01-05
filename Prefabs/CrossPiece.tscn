@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=4 uid="uid://cq5kc6q61mvne"]
+[gd_scene load_steps=6 format=4 uid="uid://cq5kc6q61mvne"]
+
+[ext_resource type="Material" uid="uid://2wq85p1c88va" path="res://Prefabs/Material.tres" id="1_u07ou"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c5pdr"]
 
@@ -40,6 +42,7 @@ shadow_mesh = SubResource("ArrayMesh_cpjj1")
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_8eakv")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("1_u07ou")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Cross_Piece"]
 collision_layer = 5
