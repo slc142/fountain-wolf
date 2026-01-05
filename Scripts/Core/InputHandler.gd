@@ -103,20 +103,25 @@ func attempt_drop():
 	if ray_result:
 		var target_coord = grid_manager.world_to_grid(ray_result.position)
 		
-		# If target is empty, place. If occupied, attempt to place on top.
+		# If target is empty, place. If occupied, find the top of the stack.
 		if not grid_manager.is_occupied(target_coord):
 			# Place piece at new location
 			dragged_piece_data["node"].position = grid_manager.grid_to_world(target_coord)
 			grid_manager.grid[target_coord] = dragged_piece_data
-		elif not grid_manager.is_occupied(target_coord + Vector3i(0, 1, 0)):
-			# Place piece on top of occupied position
-			target_coord.y += 1
-			dragged_piece_data["node"].position = grid_manager.grid_to_world(target_coord)
-			grid_manager.grid[target_coord] = dragged_piece_data
+			print("placed at:", target_coord)
 		else:
-			# Return to original location
-			dragged_piece_data["node"].position = grid_manager.grid_to_world(selected_coord)
-			grid_manager.grid[selected_coord] = dragged_piece_data
+			# Find the highest occupied position at this X,Z coordinate
+			var highest_y = -1
+			for coord in grid_manager.grid.keys():
+				if coord.x == target_coord.x and coord.z == target_coord.z:
+					if coord.y > highest_y:
+						highest_y = coord.y
+			
+			# Place piece on top of the stack
+			var top_coord = Vector3i(target_coord.x, highest_y + 1, target_coord.z)
+			dragged_piece_data["node"].position = grid_manager.grid_to_world(top_coord)
+			grid_manager.grid[top_coord] = dragged_piece_data
+			print("placed on top at:", top_coord)
 	
 	# Hide drop indicator
 	drop_indicator.visible = false
@@ -145,13 +150,20 @@ func handle_drag():
 func update_drop_indicator(grid_coord: Vector3i):
 	# Find the actual drop position (accounting for stacking)
 	var drop_coord = grid_coord
-	# if grid_manager.is_occupied(grid_coord):
-	# 	# If occupied, place on top
-	# 	drop_coord.y += 1
 	
-	# Position the indicator at the drop location
+	# Find the highest occupied position at this X,Z coordinate
+	var highest_y = -1
+	for coord in grid_manager.grid.keys():
+		if coord.x == grid_coord.x and coord.z == grid_coord.z:
+			if coord.y > highest_y:
+				highest_y = coord.y
+	
+	# Position the indicator at the top of the stack
 	var indicator_pos = grid_manager.grid_to_world(drop_coord)
-	indicator_pos.y += 0.01
+	if highest_y >= 0:
+		indicator_pos.y += 0.01 + highest_y * 0.5
+	else:
+		indicator_pos.y += 0.01
 	
 	drop_indicator.position = indicator_pos
 
@@ -178,10 +190,15 @@ func shoot_ray():
 	if is_dragging and result:
 		var grid_coord = grid_manager.world_to_grid(result.position)
 		
-		# Check if this position is occupied
-		if grid_manager.is_occupied(grid_coord):
-			# If occupied, try to place on top
-			result.position.y += 0.5
+		# Find the highest occupied position at this X,Z coordinate
+		var highest_y = -1
+		for coord in grid_manager.grid.keys():
+			if coord.x == grid_coord.x and coord.z == grid_coord.z:
+				if coord.y > highest_y:
+					highest_y = coord.y
 		
+		# Position the result at the top of the stack
+		if highest_y >= 0:
+			result.position.y += 0.5 + highest_y * 0.5
 	
 	return result

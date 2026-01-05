@@ -29,6 +29,8 @@ func _ready():
 	
 	# Row 1: Turn piece
 	grid_manager.place_piece(Vector3i(2,0,0), turn)  # Turn piece
+	#grid_manager.place_piece(Vector3i(2,1,0), turn)
+	grid_manager.place_piece(Vector3i(2,2,0), turn)
 	
 	# Row 2: T-piece
 	grid_manager.place_piece(Vector3i(-1,0,1), t_piece)  # T-piece
@@ -38,6 +40,7 @@ func _ready():
 	
 	# Row 4: Block and One-exit
 	grid_manager.place_piece(Vector3i(-2,0,2), block_piece)  # Block
+	grid_manager.place_piece(Vector3i(-2,1,2), block_piece)
 	grid_manager.place_piece(Vector3i(-2,0,1), one_exit_piece)  # One-exit
 	
 	# Additional test pieces

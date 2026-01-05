@@ -71,4 +71,7 @@ func grid_to_world(coord: Vector3i) -> Vector3:
 
 # Convert World Position -> Grid Coordinate
 func world_to_grid(pos: Vector3) -> Vector3i:
-	return Vector3i(round(pos.x / cell_size), round(pos.y / cell_size), round(pos.z / cell_size))
+	var x = round(pos.x / cell_size)
+	var y = max(round((pos.y / (cell_size * 0.5)) - 0.5), 0)
+	var z = round(pos.z / cell_size)
+	return Vector3i(x, y, z)

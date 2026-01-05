@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cpoy3k62s2fm5"]
+[gd_scene load_steps=22 format=3 uid="uid://cpoy3k62s2fm5"]
 
 [ext_resource type="Script" uid="uid://bvevhh0kxgxhb" path="res://Scripts/Core/Main.gd" id="1_kln2b"]
 [ext_resource type="Script" uid="uid://bdewe0hm8vd3p" path="res://Scripts/Core/GridManager.gd" id="2_rgh2o"]
@@ -42,6 +42,9 @@ albedo_color = Color(0.54238266, 0.6849802, 0.442527, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_vy5pj"]
 material = SubResource("StandardMaterial3D_vy5pj")
 size = Vector3(5, 0.2, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1p5hy"]
+size = Vector3(0.1, 4, 5)
 
 [node name="GameWorld" type="Node3D"]
 script = ExtResource("1_kln2b")
@@ -103,3 +106,31 @@ shape = SubResource("BoxShape3D_frkhe")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 mesh = SubResource("BoxMesh_vy5pj")
+
+[node name="Invisible Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.55, 1.55, 0)
+collision_layer = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Invisible Wall"]
+shape = SubResource("BoxShape3D_1p5hy")
+
+[node name="Invisible Wall2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.55, 1.55, 0)
+collision_layer = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Invisible Wall2"]
+shape = SubResource("BoxShape3D_1p5hy")
+
+[node name="Invisible Wall3" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.55, 2.55)
+collision_layer = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Invisible Wall3"]
+shape = SubResource("BoxShape3D_1p5hy")
+
+[node name="Invisible Wall4" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.55, -2.55)
+collision_layer = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Invisible Wall4"]
+shape = SubResource("BoxShape3D_1p5hy")
