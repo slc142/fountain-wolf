@@ -12,14 +12,9 @@
 [ext_resource type="Script" uid="uid://1j6q8d1ycgrb" path="res://Scripts/Core/Camera.gd" id="6_v1gob"]
 [ext_resource type="PackedScene" uid="uid://ba13ovap1bwiw" path="res://Prefabs/OneExitPiece.tscn" id="7_erwvk"]
 [ext_resource type="Script" uid="uid://bqcpie86t1m8g" path="res://Scripts/Core/WaterPathManager.gd" id="8_50glp"]
+[ext_resource type="PackedScene" uid="uid://bmi38q52jjw4j" path="res://Prefabs/SourcePiece.tscn" id="8_h1m7h"]
+[ext_resource type="PackedScene" uid="uid://m15uvp03bp6k" path="res://Prefabs/GoalPiece.tscn" id="9_erwvk"]
 [ext_resource type="Shader" uid="uid://ckgf7o51iarw7" path="res://Shaders/water_flow.gdshader" id="9_vy5pj"]
-
-[sub_resource type="Sky" id="Sky_vy5pj"]
-
-[sub_resource type="Environment" id="Environment_v1gob"]
-background_mode = 1
-background_color = Color(0.29576412, 0.35378528, 0.39222178, 1)
-sky = SubResource("Sky_vy5pj")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frkhe"]
 shading_mode = 0
@@ -54,12 +49,11 @@ t_scene = ExtResource("4_frkhe")
 cross_scene = ExtResource("5_1p5hy")
 block_scene = ExtResource("6_h1m7h")
 one_exit_scene = ExtResource("7_erwvk")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_v1gob")
+source_scene = ExtResource("8_h1m7h")
+goal_scene = ExtResource("9_erwvk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.95561326, -1.287843e-08, 0.29462415, -0.29462415, -4.177118e-08, 0.95561326, 0, -1, -4.371139e-08, 0.25793028, 4.4902124, 0)
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0)
 light_energy = 0.6
 shadow_enabled = true
 

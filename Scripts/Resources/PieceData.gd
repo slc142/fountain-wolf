@@ -1,7 +1,7 @@
 class_name PieceData
 extends Resource
 
-enum Type { STRAIGHT, TURN, T, CROSS, BLOCK, ONE_EXIT }
+enum Type { STRAIGHT, TURN, T, CROSS, BLOCK, ONE_EXIT, SOURCE, GOAL }
 
 @export var type: Type
 @export var model_scene: PackedScene
@@ -105,3 +105,22 @@ static func create_one_exit_piece(scene: PackedScene, exit_side: Vector3i, is_mo
 	
 	return p
 	
+static func create_source_piece(scene: PackedScene, exit_side: Vector3i) -> PieceData:
+	var p = PieceData.new()
+	p.type = Type.SOURCE
+	p.model_scene = scene
+	p.is_movable = false
+	p.flow_map[exit_side] = {}
+	p.rotation_degrees = Vector3(exit_side).angle_to(Vector3.FORWARD) * 180.0 / PI
+	
+	return p
+
+static func create_goal_piece(scene: PackedScene, exit_side: Vector3i) -> PieceData:
+	var p = PieceData.new()
+	p.type = Type.GOAL
+	p.model_scene = scene
+	p.is_movable = false
+	p.flow_map[exit_side] = {}
+	p.rotation_degrees = Vector3(exit_side).angle_to(Vector3.FORWARD) * 180.0 / PI
+	
+	return p

@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=4 uid="uid://m15uvp03bp6k"]
+
+[ext_resource type="Material" uid="uid://2wq85p1c88va" path="res://Prefabs/Material.tres" id="1_fertx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dghte"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4ec5y"]
+_surfaces = [{
+"aabb": AABB(-0.5, -0.5, -0.5, 1, 1, 1),
+"format": 34896613377,
+"index_count": 132,
+"index_data": PackedByteArray("AAABAAIAAwAAAAIABAAAAAMAAAAEAAEAAwACAAUABgACAAEAAgAGAAUABwADAAUABAADAAcABQAGAAgABAAJAAEABQAIAAoACwAEAAcABwAFAAwACwAHAAwABQAKAAwADQABAAkABgABAA0ADQAJAA4ABAAPAAkADwAOAAkABAALAA8AEAANAA4ADwAQAA4ABgANABEAEAARAA0ABgARABIAEwAGABIAEQATABIAEwAIAAYACgAIABMAEQAUABMACgATABQAEAAUABEAFQAQAA8AFAAQABUAFAAVAAoAFQAPAAsACgAVABYAFgAVAAsADAAKABYAFgALABcACwAMABcADAAWABcA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("AAAAAP//AAAAAP//AAAAAAAA/////wAA//8AAP//AAAAAAAAAAAAAP///////wAAmRn//2XmAAD//wAAAAAAAGXm//9l5gAAzEz//wAAAABl5v//mRkAADKzzEwAAAAA/////wAAAACZGf//mRkAAMxM//+ZGQAAzEzMTAAAAADMTMxMmRkAAJkZmRmZGQAAmRmZGWXmAABl5pkZZeYAAGXmmRmZGQAAMrPMTJkZAAAys///mRkAADKz//8AAAAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_7cwuk"]
+resource_name = "Pieces2_Cube_172"
+_surfaces = [{
+"aabb": AABB(-0.5, -0.5, -0.5, 1, 1, 1),
+"attribute_data": PackedByteArray("/1////+f/7//n////1//vzJzMpP/n/9//58yk/9f/3//X/+/MnPMrP+fzKz/n/+//1//f/+f/z//n/9//1//P/9f/z//nwAA/5//P/9fAAD/H/9//1//P/9f/3//H/8/mNmZeczM/3/MzJl5/9//f5jZZkb/3/8//5//P2WmZkZlppl5/5//fzKzmXkys/9//1//3/+XVOX/l//f/19U5f+Xqlr/X/9f/5f/X/9fqlr/X6pa/x//X/9f/1//H6pa/5////9f/7//X////5//v/+f/384bv+P/5//j/9f/384bv+v/1//v/+f/7//n/+v/5//f/9f/z//X/9//5//P/9f/z//nwAA/18AAP+f/z//H/9//1//P/8f/z//X/9/"),
+"format": 34896613399,
+"index_count": 132,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUABAAIAAcACAAEAAkACAAJAAoACAAKAAsADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAbABgAHAAdABsAHQAcAB4AHgAcAB8AHgAfACAAHgAgACEAIQAgACIAIQAiACMAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANwA1ADQANwA4ADUAOAA3ADkAOAA5ADoAOAA6ADsAPAA9AD4APAA/AD0AQABBAEIAQABDAEEARABFAEYARABHAEUA"),
+"material": SubResource("StandardMaterial3D_dghte"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 72,
+"vertex_data": PackedByteArray("AAAAAP//VNUAAP//AABU1QAA/////1TVAAAAAAAAVNUys8xMAAD///////8AAP//MrP//wAA/////wAAAAD//wAAAAAAAP//zEzMTAAA///MTP//AAD//wAA//8AAP////8AAAAAVNX///////9U1f////8AAFTV//8AAP//VNX//wAA////vwAA//////+//////////78AAAAA////vwAAAAAAAP+///8AAP///7///wAAAAD/vwAAAAD///+/mRn//5kZ///MTP//AAD//8xM//+ZGf//AAD//wAA//+ZGf//Zeb//wAA//////////////////9l5v//Zeb//2Xm//+ZGf///////wAA//8ys///mRn//zKz//8AAP//zEzMTAAAqirMTP//mRmqKsxM//8AAKoqzEzMTJkZqioys///mRmqKjKzzEwAAKoqMrP//wAAqioys8xMmRmqKjKzzEyZGf8/zEzMTAAA/z8ys8xMAAD/P8xMzEyZGf8/mRn//2XmqiqZGZkZmRmqKpkZmRll5qoqmRn//5kZqipl5v//mRn/PzKzzEyZGf8/MrP//5kZ/z9l5pkZmRn/P8xMzEyZGf8/mRmZGZkZ/z+ZGf//mRn/P8xM//+ZGf8/Zeb//5kZqipl5pkZZeaqKmXmmRmZGaoqZeb//2Xmqipl5pkZZeYAAJkZ//9l5gAAmRmZGWXmAABl5v//ZeYAAJkZmRmZGf8/ZeaZGWXm/z+ZGZkZZeb/P2XmmRmZGf8/VNVU1VTVVNVU1VTVVNVU1f+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+/qiqqKqoqqiqqKqoqqiqqKv////////////////////8AAP9/AAD/fwAA/38AAP9//3//v/9//7//f/+//3//v/9//7//f/+//3//v/9//7//f/+//3//v/9//7//f/+/qiqqKqoqqiqqKqoqqiqqKlTVVNVU1VTVVNVU1VTVVNX///9/////f////3////9/qiqqKqoqqiqqKqoqqiqqKv//////////////////////////////////////////VNVU1VTVVNVU1VTVVNVU1f+//7//v/+//7//v/+//7////9/////f////3////9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_4ec5y")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hmrfw"]
+
+[node name="GoalPiece" type="Node3D"]
+
+[node name="Goal_Piece" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("ArrayMesh_7cwuk")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("1_fertx")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Goal_Piece"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Goal_Piece/StaticBody3D"]
+shape = SubResource("BoxShape3D_hmrfw")

@@ -43,7 +43,7 @@ def create_opening(obj, face_normal, opening_size=OPENING_SIZE, extra_depth=0):
         cut_scale_x = opening_width
         cut_scale_y = cut_depth
         cut_scale_z = PIECE_HEIGHT - floor_thickness
-    else:  # Top or bottom face (not used for this game)
+    else:  # Top or bottom face
         cut_location = obj.location + face_normal * (PIECE_HEIGHT / 2)
         cut_scale_x = opening_width
         cut_scale_y = opening_width
@@ -76,6 +76,37 @@ def create_opening(obj, face_normal, opening_size=OPENING_SIZE, extra_depth=0):
     obj.select_set(False)
     bpy.context.view_layer.objects.active = cut_cube
     bpy.ops.object.delete()
+    
+    # Re-select the main object
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+
+def add_cover(obj):
+    """Add a cover on top of the piece with same thickness as floor"""
+    floor_thickness = 0.1
+    cover_size = PIECE_SIZE
+    cover_height = floor_thickness
+    
+    # Create cover cube
+    bpy.ops.mesh.primitive_cube_add(size=1.0)
+    cover = bpy.context.active_object
+    cover.name = "Cover"
+    
+    # Scale and position the cover
+    cover.scale.x = cover_size
+    cover.scale.y = cover_size
+    cover.scale.z = cover_height
+    cover.location.x = obj.location.x
+    cover.location.y = obj.location.y
+    cover.location.z = obj.location.z + PIECE_HEIGHT / 2 - cover_height / 2
+    
+    # Select both objects
+    obj.select_set(True)
+    cover.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    
+    # Join the cover to the main piece
+    bpy.ops.object.join()
     
     # Re-select the main object
     obj.select_set(True)
@@ -146,6 +177,86 @@ def create_block():
     
     return piece
 
+def create_source_piece():
+    """Create a water source piece (covered one-exit piece)"""
+    piece = create_one_exit_piece()
+    piece.name = "Source_Piece"
+    add_cover(piece)
+    return piece
+
+def create_goal_piece():
+    """Create a goal piece (one-exit with square cut in top)"""
+    piece = create_one_exit_piece()
+    piece.name = "Goal_Piece"
+    
+    # Create square cut in top face
+    cut_size = PIECE_SIZE * 0.8  # Square cut size
+    cut_depth = PIECE_HEIGHT * 0.9  # How deep the cut goes
+    
+    # Create cut cube for the square
+    bpy.ops.mesh.primitive_cube_add(size=1.0)
+    cut_cube = bpy.context.active_object
+    cut_cube.name = "Goal_Cut_Temp"
+    
+    # Scale and position the cut cube (centered on top)
+    cut_cube.scale.x = cut_size
+    cut_cube.scale.y = cut_size
+    cut_cube.scale.z = cut_depth
+    cut_cube.location.x = piece.location.x
+    cut_cube.location.y = piece.location.y
+    cut_cube.location.z = piece.location.z + PIECE_HEIGHT / 2 - cut_depth / 2
+    
+    # Select both objects
+    piece.select_set(True)
+    cut_cube.select_set(True)
+    bpy.context.view_layer.objects.active = piece
+    
+    # Apply boolean modifier to cut the square
+    bpy.ops.object.modifier_add(type='BOOLEAN')
+    piece.modifiers[-1].operation = 'DIFFERENCE'
+    piece.modifiers[-1].object = cut_cube
+    bpy.ops.object.modifier_apply(modifier="Boolean")
+    
+    # Delete the temporary cut cube
+    cut_cube.select_set(True)
+    piece.select_set(False)
+    bpy.context.view_layer.objects.active = cut_cube
+    bpy.ops.object.delete()
+    
+    # Re-select the main object
+    piece.select_set(True)
+    bpy.context.view_layer.objects.active = piece
+    
+    return piece
+
+def create_covered_straight_piece():
+    """Create a covered straight piece"""
+    piece = create_straight_piece()
+    piece.name = "Covered_Straight_Piece"
+    add_cover(piece)
+    return piece
+
+def create_covered_turn_piece():
+    """Create a covered turn piece"""
+    piece = create_turn_piece()
+    piece.name = "Covered_Turn_Piece"
+    add_cover(piece)
+    return piece
+
+def create_covered_t_piece():
+    """Create a covered T-piece"""
+    piece = create_t_piece()
+    piece.name = "Covered_T_Piece"
+    add_cover(piece)
+    return piece
+
+def create_covered_cross_piece():
+    """Create a covered cross-piece"""
+    piece = create_cross_piece()
+    piece.name = "Covered_Cross_Piece"
+    add_cover(piece)
+    return piece
+
 def arrange_pieces_in_grid():
     """Arrange all pieces in a grid for easy viewing"""
     pieces = bpy.context.scene.objects
@@ -168,7 +279,13 @@ def create_all_pieces():
         create_t_piece(),
         create_cross_piece(),
         create_one_exit_piece(),
-        create_block()
+        create_block(),
+        create_source_piece(),
+        create_goal_piece(),
+        create_covered_straight_piece(),
+        create_covered_turn_piece(),
+        create_covered_t_piece(),
+        create_covered_cross_piece(),
     ]
     
     # Arrange pieces in a grid

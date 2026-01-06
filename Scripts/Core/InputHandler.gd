@@ -140,6 +140,9 @@ func handle_drag():
 		# Hover effect: move the visual node to follow mouse (snapped to grid)
 		# var hover_coord = grid_manager.world_to_grid(ray_result.position)
 		# var target_pos = grid_manager.grid_to_world(hover_coord)
+
+		# TODO: make the hover effect smoothly animated
+
 		var target_pos = ray_result.position
 		target_pos.y += 0.5 # Keep it "floating" while dragging
 		dragged_piece_data["node"].position = target_pos
