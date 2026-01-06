@@ -81,10 +81,11 @@ script = ExtResource("3_pbw6q")
 grid_manager = NodePath("../GridManager")
 water_path_manager = NodePath("../WaterPathManager")
 
-[node name="InputHandler" type="Node3D" parent="." node_paths=PackedStringArray("grid_manager", "flow_controller", "camera")]
+[node name="InputHandler" type="Node3D" parent="." node_paths=PackedStringArray("grid_manager", "flow_controller", "level_manager", "camera")]
 script = ExtResource("5_pbw6q")
 grid_manager = NodePath("../GridManager")
 flow_controller = NodePath("../FlowController")
+level_manager = NodePath("../LevelManager")
 camera = NodePath("../Camera3D")
 drop_indicator_material = SubResource("StandardMaterial3D_frkhe")
 

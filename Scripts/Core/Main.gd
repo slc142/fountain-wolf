@@ -47,8 +47,8 @@ func create_test_level() -> LevelData:
 	# Add piece placements to level
 	level.add_piece_placement(Vector3i(1,0,0), straight_x_fixed)  # Another straight X
 	level.add_piece_placement(Vector3i(2,0,0), turn)  # Turn piece
-	level.add_piece_placement(Vector3i(-1,0,1), t_piece)  # T-piece
-	level.add_piece_placement(Vector3i(1,0,1), cross_piece)  # Cross piece
+	level.add_piece_placement(Vector3i(1,0,1), t_piece)  # T-piece
+	# level.add_piece_placement(Vector3i(1,0,1), cross_piece)  # Cross piece
 	level.add_piece_placement(Vector3i(-2,0,2), block_piece)  # Block
 	level.add_piece_placement(Vector3i(-2,0,1), one_exit_piece)  # One-exit
 	level.add_piece_placement(Vector3i(0,0,2), straight_z)  # Straight Z for testing

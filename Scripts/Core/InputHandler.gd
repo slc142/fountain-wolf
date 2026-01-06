@@ -91,6 +91,13 @@ func attempt_pick_up():
 			dragged_piece_data = grid_manager.grid[coord]
 			grid_manager.grid.erase(coord)
 			
+			# Recalculate flow immediately when piece is picked up
+			if level_manager:
+				level_manager.recalculate_flow(selected_coord)
+			else:
+				# Fallback to hardcoded values if LevelManager not set
+				flow_controller.calculate_flow(Vector3i(0,2,0), Vector3i.FORWARD)
+			
 			# Visual feedback: Lift piece slightly
 			dragged_piece_data["node"].position.y += 0.5
 			
@@ -101,6 +108,7 @@ func attempt_drop():
 	if not is_dragging: return
 	
 	var ray_result = shoot_ray()
+	var placed_coord = null
 	if ray_result:
 		var target_coord = grid_manager.world_to_grid(ray_result.position)
 		
@@ -109,6 +117,7 @@ func attempt_drop():
 			# Place piece at new location
 			dragged_piece_data["node"].position = grid_manager.grid_to_world(target_coord)
 			grid_manager.grid[target_coord] = dragged_piece_data
+			placed_coord = target_coord
 			print("placed at:", target_coord)
 		else:
 			# Find the highest occupied position at this X,Z coordinate
@@ -123,6 +132,7 @@ func attempt_drop():
 			dragged_piece_data["node"].position = grid_manager.grid_to_world(top_coord)
 			grid_manager.grid[top_coord] = dragged_piece_data
 			print("placed on top at:", top_coord)
+			placed_coord = top_coord	
 	else:
 		# return the piece to its original location
 		dragged_piece_data["node"].position = grid_manager.grid_to_world(selected_coord)
@@ -138,7 +148,9 @@ func attempt_drop():
 	
 	# Recalculate flow whenever a piece is moved
 	if level_manager:
-		level_manager.recalculate_flow()
+		# Use the target coordinate for partial recalculation
+		if ray_result:
+			level_manager.recalculate_flow(placed_coord)
 	else:
 		# Fallback to hardcoded values if LevelManager not set
 		flow_controller.calculate_flow(Vector3i(0,2,0), Vector3i.FORWARD)

@@ -10,6 +10,61 @@ func clear_paths():
 		p.queue_free()
 	active_paths.clear()
 
+func remove_paths_from_index(start_index: int, total_branches: int):
+	"""Remove only paths that correspond to branches from a specific index"""
+	print("=== DEBUG: remove_paths_from_index called ===")
+	print("start_index: ", start_index)
+	print("active_paths.size(): ", active_paths.size())
+	
+	# Get reference to FlowController to access branch information
+	var flow_controller = get_node_or_null("../FlowController")
+	if not flow_controller:
+		print("Warning: Cannot access FlowController for selective path removal")
+		return
+	
+	var branches = flow_controller.branches
+	print("branches.size(): ", branches.size())
+	
+	var paths_to_remove = []
+	
+	# Find which branches should be removed based on their delay
+	# Branches are stored in order, so we can match them to paths
+	var branch_index = 0
+	var path_index = 0
+	
+	while branch_index < branches.size() and path_index < active_paths.size():
+		var _branch = branches[branch_index]
+		
+		# Check if this branch should be removed
+		if branch_index >= start_index:
+			# Remove both mesh and path_node for this branch
+			if path_index < active_paths.size():
+				paths_to_remove.append(active_paths[path_index])  # mesh
+				print("Marking path[", path_index, "] for removal (branch ", branch_index, ")")
+			if path_index + 1 < active_paths.size():
+				paths_to_remove.append(active_paths[path_index + 1])  # path_node
+				print("Marking path[", path_index + 1, "] for removal (branch ", branch_index, ")")
+		
+		branch_index += 1
+		path_index += 2  # Each branch creates 2 paths
+	
+	# Remove all paths that come after the last valid branch
+	while path_index < active_paths.size():
+		paths_to_remove.append(active_paths[path_index])
+		print("Marking extra path[", path_index, "] for removal")
+		path_index += 1
+	
+	print("Total paths to remove: ", paths_to_remove.size())
+	
+	# Remove the identified paths
+	for path in paths_to_remove:
+		path.queue_free()
+		active_paths.erase(path)
+	
+	print("Removed ", paths_to_remove.size(), " paths starting from branch index ", start_index)
+	print("Remaining active_paths: ", active_paths.size())
+	print("=== END DEBUG ===")
+
 func create_flow_branch(points: Array, start_delay: float):
 	if points.size() < 2: return # Can't make a curve with 1 point
 

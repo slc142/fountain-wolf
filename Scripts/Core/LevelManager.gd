@@ -46,9 +46,14 @@ func get_goal_info() -> Dictionary:
 	"""Get current goal position and direction"""
 	return {"position": goal_position, "direction": goal_direction}
 
-func recalculate_flow():
-	"""Recalculate flow from current source position"""
-	flow_controller.calculate_flow(source_position, source_direction)
+func recalculate_flow(from_coord: Vector3i = Vector3i(-999, -999, -999)):
+	"""Recalculate flow from source or from a specific coordinate"""
+	if from_coord != Vector3i(-999, -999, -999):
+		# Partial recalculation from specific coordinate
+		flow_controller.recalculate_flow_from_point(from_coord)
+	else:
+		# Full recalculation from source
+		flow_controller.calculate_flow(source_position, source_direction)
 
 func check_win_condition() -> bool:
 	"""Check if water reaches the goal piece"""
