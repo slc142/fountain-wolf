@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cpoy3k62s2fm5"]
+[gd_scene load_steps=23 format=3 uid="uid://cpoy3k62s2fm5"]
 
 [ext_resource type="Script" uid="uid://bvevhh0kxgxhb" path="res://Scripts/Core/Main.gd" id="1_kln2b"]
 [ext_resource type="Script" uid="uid://bdewe0hm8vd3p" path="res://Scripts/Core/GridManager.gd" id="2_rgh2o"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://bmi38q52jjw4j" path="res://Prefabs/SourcePiece.tscn" id="8_h1m7h"]
 [ext_resource type="PackedScene" uid="uid://m15uvp03bp6k" path="res://Prefabs/GoalPiece.tscn" id="9_erwvk"]
 [ext_resource type="Shader" uid="uid://ckgf7o51iarw7" path="res://Shaders/water_flow.gdshader" id="9_vy5pj"]
+[ext_resource type="Script" uid="uid://3hqhdse45xar" path="res://Scripts/Core/LevelManager.gd" id="16_erwvk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frkhe"]
 shading_mode = 0
@@ -90,6 +91,11 @@ drop_indicator_material = SubResource("StandardMaterial3D_frkhe")
 [node name="WaterPathManager" type="Node3D" parent="."]
 script = ExtResource("8_50glp")
 water_shader = SubResource("ShaderMaterial_bmxlf")
+
+[node name="LevelManager" type="Node3D" parent="." node_paths=PackedStringArray("grid_manager", "flow_controller")]
+script = ExtResource("16_erwvk")
+grid_manager = NodePath("../GridManager")
+flow_controller = NodePath("../FlowController")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)

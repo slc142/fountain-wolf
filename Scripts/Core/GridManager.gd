@@ -75,3 +75,8 @@ func world_to_grid(pos: Vector3) -> Vector3i:
 	var y = max(round((pos.y / (cell_size * 0.5)) - 0.5), 0)
 	var z = round(pos.z / cell_size)
 	return Vector3i(x, y, z)
+
+func clear_grid() -> void:
+	for coord in grid.keys():
+		remove_piece(coord)
+	grid.clear()

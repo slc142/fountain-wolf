@@ -2,6 +2,7 @@ extends Node3D
 
 @export var grid_manager: GridManager
 @export var flow_controller: FlowController
+@export var level_manager: LevelManager
 @export var camera: Camera3D
 @export var drop_indicator_material: Material  # Material for the drop indicator
 
@@ -122,6 +123,11 @@ func attempt_drop():
 			dragged_piece_data["node"].position = grid_manager.grid_to_world(top_coord)
 			grid_manager.grid[top_coord] = dragged_piece_data
 			print("placed on top at:", top_coord)
+	else:
+		# return the piece to its original location
+		dragged_piece_data["node"].position = grid_manager.grid_to_world(selected_coord)
+		grid_manager.grid[selected_coord] = dragged_piece_data
+		print("piece returned to original location")
 	
 	# Hide drop indicator
 	drop_indicator.visible = false
@@ -131,8 +137,11 @@ func attempt_drop():
 	dragged_piece_data = null
 	
 	# Recalculate flow whenever a piece is moved
-	# TODO: add a way to change the flow source
-	flow_controller.calculate_flow(Vector3i(0,1,0), Vector3i.DOWN)
+	if level_manager:
+		level_manager.recalculate_flow()
+	else:
+		# Fallback to hardcoded values if LevelManager not set
+		flow_controller.calculate_flow(Vector3i(0,2,0), Vector3i.FORWARD)
 
 func handle_drag():
 	var ray_result = shoot_ray()

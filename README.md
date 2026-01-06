@@ -9,14 +9,14 @@ The goal of the game is to create a path of flowing water from the start point t
 - [ ] Game logic
     - [x] Basic flow logic
     - [ ] Flow logic with covered pieces
-    - [ ] Level win condition
+    - [x] Level win condition
     - [x] Non-movable pieces
     - [x] Piece stacking
     - [ ] Multiple color flows
     - [ ] Partial flow recalculation (immediately after pick up piece and after placement)
 - [ ] Piece types:
-    - [ ] Water source
-    - [ ] Goal
+    - [x] Water source
+    - [x] Goal
     - [x] Block
     - [x] One-exit piece
     - [x] T-piece

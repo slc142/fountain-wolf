@@ -25,7 +25,7 @@ func create_flow_branch(points: Array, start_delay: float):
 	path_node.curve = curve
 	add_child(path_node)
 	
-	# 3. Create the Mesh (CSGPolygon)
+	# Create the Mesh (CSGPolygon)
 	var mesh = CSGPolygon3D.new()
 	add_child(mesh)
 	mesh.mode = CSGPolygon3D.MODE_PATH
@@ -45,7 +45,7 @@ func create_flow_branch(points: Array, start_delay: float):
 	active_paths.append(mesh)
 	active_paths.append(path_node) # Store path to clear too!
 	
-	# 4. Animate the Shader
+	# Animate the Shader
 	var path_length = curve.get_baked_length() # Get actual length in meters
 	
 	# Set the shader to 'empty' (fill_amount 0)
