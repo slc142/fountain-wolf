@@ -88,6 +88,8 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 	
 	if entry_dir == Vector3i.DOWN or data.type == PieceData.Type.SOURCE: # Water moving down means it entered from UP
 		# If falling in, we look for ALL valid exits in the piece data
+		if entry_dir == Vector3i.DOWN and data.type != PieceData.Type.SOURCE:
+			print("Water falling into ", current_coord)
 		for k in data.flow_map.keys():
 			if k != Vector3i.UP: exits.append(k)
 	
