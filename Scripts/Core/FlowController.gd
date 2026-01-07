@@ -6,11 +6,13 @@ class BranchNode:
 	var delay: float = 0.0
 	var parent: BranchNode = null
 	var children: Array[BranchNode] = []
+	var visited_coords: Array[Vector3i] = [] # Coordinates visited by this branch
 	
-	func _init(p_points: Array = [], p_delay: float = 0.0, p_parent: BranchNode = null):
+	func _init(p_points: Array = [], p_delay: float = 0.0, p_parent: BranchNode = null, p_visited_coords: Array[Vector3i] = []):
 		points = p_points.duplicate(true)
 		delay = p_delay
 		parent = p_parent
+		visited_coords = p_visited_coords.duplicate()
 		if p_parent:
 			p_parent.children.append(self)
 
@@ -31,7 +33,7 @@ func calculate_flow(start_coord: Vector3i, start_direction: Vector3i):
 	goal_reached = false
 	total_animation_time = 0.0
 	
-	_trace_branch(start_coord, start_direction, null, [], 0.0)
+	_trace_branch(start_coord, start_direction, null, [], 0.0, [])
 	
 	# Calculate total animation time
 	_calculate_animation_time()
@@ -40,12 +42,14 @@ func calculate_flow(start_coord: Vector3i, start_direction: Vector3i):
 	_create_flow_paths()
 
 # Recursive function to trace paths
-func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: BranchNode, current_points: Array, accumulated_delay: float):
+func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: BranchNode, current_points: Array, accumulated_delay: float, branch_visited_coords: Array[Vector3i] = []):
 	var center_pos = grid_manager.grid_to_world(current_coord)
 	
 	# Track visited coordinates and build flow path
 	if current_coord not in visited_coords:
 		visited_coords.append(current_coord)
+	if current_coord not in branch_visited_coords:
+		branch_visited_coords.append(current_coord)
 	
 	# Check if this is the goal position
 	var level_manager = get_node_or_null("../LevelManager")
@@ -57,7 +61,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 	if current_coord.y < MAX_DEPTH: 
 		print("Fell into the abyss at ", current_coord)
 		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
-		var node = BranchNode.new(current_points, accumulated_delay, parent_node)
+		var node = BranchNode.new(current_points, accumulated_delay, parent_node, branch_visited_coords)
 		if parent_node == null:
 			root_nodes.append(node)
 		return
@@ -75,7 +79,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 		print("Flow falling at ", current_coord)
 		
 		# Continue falling
-		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, parent_node, current_points, accumulated_delay + (current_points.size() * delay_factor))
+		_trace_branch(current_coord + Vector3i.DOWN, Vector3i.DOWN, parent_node, current_points, accumulated_delay + (current_points.size() * delay_factor), branch_visited_coords)
 		return
 	
 	var data = piece_info["data"]
@@ -100,7 +104,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 	else:
 		print("Flow blocked at ", current_coord)
 		current_points.append({"pos": center_pos - entry_dir * 0.5, "in": Vector3.ZERO, "out": Vector3.ZERO})
-		var node = BranchNode.new(current_points, accumulated_delay, parent_node)
+		var node = BranchNode.new(current_points, accumulated_delay, parent_node, branch_visited_coords)
 		if parent_node == null:
 			root_nodes.append(node)
 		return # Blocked
@@ -109,7 +113,7 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 	if exits.size() > 1:
 		# Important: Add the CENTER point to connect the fall to the split
 		current_points.append({"pos": center_pos, "in": Vector3.ZERO, "out": Vector3.ZERO})
-		var split_node = BranchNode.new(current_points, accumulated_delay, parent_node)
+		var split_node = BranchNode.new(current_points, accumulated_delay, parent_node, branch_visited_coords)
 		if parent_node == null:
 			root_nodes.append(split_node)
 		
@@ -120,8 +124,11 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 			# Start new branch list with the Center Point
 			var new_branch = [center_pos]
 			
+			# Create new visited coords list for child branch (inherits parent's coords)
+			var child_visited_coords = branch_visited_coords.duplicate()
+			
 			# Recurse
-			_trace_branch(current_coord + exit, exit, split_node, new_branch, start_delay)
+			_trace_branch(current_coord + exit, exit, split_node, new_branch, start_delay, child_visited_coords)
 		
 	# If Single Path (Extension)
 	elif exits.size() == 1:
@@ -142,13 +149,13 @@ func _trace_branch(current_coord: Vector3i, entry_dir: Vector3i, parent_node: Br
 			#"in": data.turn_points.get("in", Vector3.ZERO),
 			#"out": data.turn_points.get("out", Vector3.ZERO)}
 		#)
-		_trace_branch(current_coord + exit, exit, parent_node, current_points, accumulated_delay ) # don't add delay here
+		_trace_branch(current_coord + exit, exit, parent_node, current_points, accumulated_delay, branch_visited_coords) # don't add delay here
 		
 	# If we are at the very end of a branch (no splits, but loop finished), save it
 	else:
 		current_points.append({"pos": center_pos + entry_dir * 0.5, "in": Vector3.ZERO, "out": Vector3.ZERO})
 		current_points.append({"pos": center_pos - entry_dir * 0.5, "in": Vector3.ZERO, "out": Vector3.ZERO})
-		var node = BranchNode.new(current_points, accumulated_delay, parent_node)
+		var node = BranchNode.new(current_points, accumulated_delay, parent_node, branch_visited_coords)
 		if parent_node == null:
 			root_nodes.append(node)
 
@@ -233,7 +240,7 @@ func _on_victory_check_complete():
 	root_nodes.clear()
 	
 	# Recalculate flow from current source position
-	_trace_branch(level_manager.source_position, level_manager.source_direction, null, [], 0.0)
+	_trace_branch(level_manager.source_position, level_manager.source_direction, null, [], 0.0, [])
 	
 	# Check if goal is still reachable
 	if goal_reached:
