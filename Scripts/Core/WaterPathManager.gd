@@ -9,8 +9,40 @@ func clear_paths():
 		p.queue_free()
 	paths.clear()
 
-func create_flow_branch(points: Array, start_delay: float):
-	if points.size() < 2: return # Can't make a curve with 1 point
+# Selective clearing methods for partial recalculation
+func clear_subtree_paths(node):
+	_clear_subtree_recursive(node)
+
+func _clear_subtree_recursive(node):
+	# Clear this node's path
+	if node.path3d:
+		node.path3d.queue_free()
+		node.path3d = null
+		
+	# Kill animation if it exists
+	if node.animation_tween:
+		node.animation_tween.kill()
+		node.animation_tween = null
+	
+	# Clear children
+	for child in node.children:
+		_clear_subtree_recursive(child)
+
+func get_animation_tween(path_node: Path3D) -> Tween:
+	# Get the tween from the path's mesh material animation
+	if not path_node or path_node.get_child_count() == 0:
+		return null
+		
+	var mesh = path_node.get_child(0)
+	if not mesh or not mesh.material:
+		return null
+		
+	# This is a bit tricky - we need to store the tween reference
+	# For now, we'll modify create_flow_branch to return both
+	return null
+
+func create_flow_branch(points: Array, start_delay: float) -> Dictionary:
+	if points.size() < 2: return {"path": null, "tween": null} # Can't make a curve with 1 point
 
 	var path_node = Path3D.new()
 	var curve = Curve3D.new()
@@ -56,3 +88,5 @@ func create_flow_branch(points: Array, start_delay: float):
 	# Also adjust duration so speed is constant (e.g. 5 meters takes 2.5 seconds)
 	var flow_duration = path_length / 2.0 
 	tween.tween_property(mat, "shader_parameter/fill_amount", path_length, flow_duration)
+	
+	return {"path": path_node, "tween": tween}
