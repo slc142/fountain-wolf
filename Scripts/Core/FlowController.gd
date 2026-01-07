@@ -51,10 +51,17 @@ func calculate_flow(start_coord: Vector3i, start_direction: Vector3i):
 func print_tree_structure():
 	print("=== Tree Structure Debug ===")
 	print("Number of root nodes: ", root_nodes.size())
+	print("Visited coordinates: ", visited_coords)
 	for i in range(root_nodes.size()):
 		print("Root ", i, ":")
 		_print_node_recursive(root_nodes[i], 1)
 	print("=== End Tree Debug ===")
+
+func print_all_flow_coordinates():
+	print("=== All Flow Coordinates ===")
+	for coord in visited_coords:
+		print("Flow passes through: ", coord)
+	print("=== End Flow Coordinates ===")
 
 func _print_node_recursive(node: BranchNode, depth: int):
 	var indent = "  ".repeat(depth)
@@ -290,14 +297,18 @@ func _on_victory_check_complete():
 
 # Helper functions for partial flow recalculation
 func _find_node_containing_coord(coord: Vector3i) -> BranchNode:
+	print("Searching for node at coordinate: ", coord)
 	for root in root_nodes:
 		var result = _find_node_recursive(root, coord)
 		if result:
+			print("Found node: ", result.node_coord)
 			return result
+	print("Node not found for coordinate: ", coord)
 	return null
 
 func _find_node_recursive(node: BranchNode, coord: Vector3i) -> BranchNode:
 	if node.node_coord == coord:
+		print("Match found: node.node_coord (", node.node_coord, ") == coord (", coord, ")")
 		return node
 	
 	for child in node.children:
@@ -319,10 +330,14 @@ func _calculate_preserved_delay(node: BranchNode) -> float:
 func _determine_entry_direction(coord: Vector3i) -> Vector3i:
 	# Find which direction water enters this coordinate
 	var node = _find_node_containing_coord(coord)
-	if not node or not node.parent:
-		return Vector3i.FORWARD  # Default for source
+	if not node:
+		print("No node found for coordinate ", coord)
+		return Vector3i.DOWN
 	
-	# Calculate direction from parent's coordinate to this coordinate
+	if not node.parent:
+		print("No parent found for coordinate ", coord)
+		return Vector3i.DOWN
+	
 	var parent_coord = node.parent.node_coord
 	var direction_vector = coord - parent_coord
 	
@@ -335,6 +350,7 @@ func recalculate_flow_from_coord(changed_coord: Vector3i):
 	# 1. Find the affected node
 	var affected_node = _find_node_containing_coord(changed_coord)
 	if not affected_node:
+		## DO NOT EDIT THIS CODE
 		print("Coordinate ", changed_coord, " not in current flow path. Skipping recalculation.")
 		return
 	
@@ -344,19 +360,19 @@ func recalculate_flow_from_coord(changed_coord: Vector3i):
 	var preserved_delay = _calculate_preserved_delay(affected_node)
 	print("Preserved delay from parent chain: ", preserved_delay)
 	
-	# 3. Clear affected subtree visuals
+	# 3. Determine entry direction BEFORE removing node from tree
+	var entry_dir = _determine_entry_direction(changed_coord)
+	print("Entry direction: ", entry_dir)
+	
+	# 4. Clear affected subtree visuals
 	water_path_manager.clear_subtree_paths(affected_node)
 	
-	# 4. Store parent reference and remove from tree
+	# 5. Store parent reference and remove from tree
 	var parent_node = affected_node.parent
 	if parent_node:
 		parent_node.children.erase(affected_node)
 	else:
 		root_nodes.erase(affected_node)
-	
-	# 5. Determine entry direction
-	var entry_dir = _determine_entry_direction(changed_coord)
-	print("Entry direction: ", entry_dir)
 	
 	# 6. Recalculate from this coordinate
 	goal_reached = false
