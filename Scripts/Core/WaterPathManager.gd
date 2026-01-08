@@ -6,7 +6,8 @@ var paths: Array[Path3D] = []
 
 func clear_paths():
 	for p in paths:
-		p.queue_free()
+		if p:
+			p.queue_free()
 	paths.clear()
 
 # Selective clearing methods for partial recalculation

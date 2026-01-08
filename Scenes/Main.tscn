@@ -17,6 +17,19 @@
 [ext_resource type="Shader" uid="uid://ckgf7o51iarw7" path="res://Shaders/water_flow.gdshader" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://3hqhdse45xar" path="res://Scripts/Core/LevelManager.gd" id="16_erwvk"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h1m7h"]
+ground_bottom_color = Color(0.3585117, 0.28411323, 0.4058658, 1)
+ground_horizon_color = Color(0.41039336, 0.5467454, 0.7514416, 1)
+ground_curve = 0.10928329
+use_debanding = false
+
+[sub_resource type="Sky" id="Sky_erwvk"]
+sky_material = SubResource("ProceduralSkyMaterial_h1m7h")
+
+[sub_resource type="Environment" id="Environment_2w5on"]
+background_mode = 2
+sky = SubResource("Sky_erwvk")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frkhe"]
 shading_mode = 0
 albedo_color = Color(0.2075, 0.83, 0.40462494, 1)
@@ -52,6 +65,9 @@ block_scene = ExtResource("6_h1m7h")
 one_exit_scene = ExtResource("7_erwvk")
 source_scene = ExtResource("8_h1m7h")
 goal_scene = ExtResource("9_erwvk")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2w5on")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0)

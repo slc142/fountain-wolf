@@ -13,7 +13,8 @@ The goal of the game is to create a path of flowing water from the start point t
     - [x] Non-movable pieces
     - [x] Piece stacking
     - [ ] Multiple color flows
-    - [ ] Partial flow recalculation (immediately after pick up piece and after placement)
+    - [ ] Multiple goals
+    - [x] Partial flow recalculation (immediately after pick up piece and after placement)
 - [ ] Piece types:
     - [x] Water source
     - [x] Goal

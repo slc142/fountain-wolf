@@ -1,15 +1,13 @@
 extends Camera3D
+@export var offset: Vector3 = Vector3(3, 4, 3)
 
 func _ready():
-	center_camera_on_grid(5, 5)
+	setup_camera(offset)
 
-func center_camera_on_grid(grid_width: int, grid_height: int):
-	## TODO: actually use the grid size values
-	
-	var center_pos = Vector3(1, 0, 1)
+func setup_camera(camera_offset: Vector3):	
+	var center_pos = Vector3.ZERO
 	# Move camera to a fixed offset relative to that center
-	# (Offset X, Height Y, Offset Z)
-	position = center_pos + Vector3(2, 4, 2) 
+	position = center_pos + camera_offset
 	
 	# Look at the calculated center
 	look_at(center_pos, Vector3.UP, false)
